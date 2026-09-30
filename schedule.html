@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Schedule Exam &mdash; Exam Scheduling System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<div class="page">
+  <header class="topnav">
+    <div class="container">
+      <a href="applicant.html" class="brand"><span class="seal">ES</span> Exam Scheduling System</a>
+      <nav>
+        <a href="applicant.html">Dashboard</a>
+        <a href="schedule.html">Schedule Exam</a>
+        <span class="user-chip" id="whoAmI"></span>
+        <button type="button" class="linklike" id="logoutBtn">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container applicant-main">
+      <h1>Schedule an Exam</h1>
+      <p class="muted mb-2">Choose an exam, then a location, date and time. Seat availability is confirmed by the system before your booking is finalised.</p>
+
+      <div class="stepper">
+        <div class="step current" data-step="exam">1 · Exam</div>
+        <div class="step" data-step="location">2 · Location</div>
+        <div class="step" data-step="date">3 · Date</div>
+        <div class="step" data-step="time">4 · Time &amp; Confirm</div>
+      </div>
+
+      <div id="alertBox" class="alert alert-error"></div>
+
+      <!-- Step 1: Exam -->
+      <div class="card" id="panel-exam">
+        <div class="card-header"><h3>1. Select an exam</h3></div>
+        <div class="field">
+          <label for="examSelect">Exam</label>
+          <select id="examSelect">
+            <option value="">Choose an exam…</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 2: Location -->
+      <div class="card" id="panel-location" style="display:none;">
+        <div class="card-header"><h3>2. Select a location</h3></div>
+        <div class="field">
+          <label for="locationSelect">Location</label>
+          <select id="locationSelect">
+            <option value="">Choose a location…</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 3: Date -->
+      <div class="card" id="panel-date" style="display:none;">
+        <div class="card-header"><h3>3. Select a date</h3></div>
+        <div class="field">
+          <label for="dateSelect">Date</label>
+          <select id="dateSelect">
+            <option value="">Choose a date…</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 4: Time / seats -->
+      <div class="card" id="panel-time" style="display:none;">
+        <div class="card-header"><h3>4. Select a time slot</h3></div>
+        <div class="slot-grid" id="slotGrid"></div>
+      </div>
+
+      <!-- Confirm -->
+      <div class="card" id="panel-confirm" style="display:none;">
+        <div class="card-header"><h3>Confirm your booking</h3></div>
+        <div id="confirmSummary" class="stack mb-2"></div>
+        <button class="btn btn-gold" id="confirmBtn">Confirm Booking</button>
+        <button class="btn btn-outline" id="cancelSelectionBtn">Choose a different time</button>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="footer">Exam Scheduling System &middot; runs locally in your browser</div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/schedule.js"></script>
+</body>
+</html>

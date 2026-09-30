@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in &mdash; Exam Scheduling System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-wrap">
+    <a href="index.html" class="auth-brand">
+      <span class="seal">ES</span>
+      <span>Exam Scheduling System</span>
+    </a>
+
+    <div class="auth-card">
+      <h1>Applicant sign in</h1>
+      <p class="subtitle">Sign in to schedule an exam or view your hall ticket.</p>
+
+      <div id="successBox" class="alert alert-success" role="status">Account created successfully. Please sign in.</div>
+      <div id="alertBox" class="alert alert-error" role="alert"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="field" id="field-email">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+
+        <div class="field" id="field-password">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Sign in</button>
+      </form>
+
+      <div class="auth-switch"><a href="reset-password.html?role=applicant">Forgot your password?</a></div>
+      <div class="auth-switch">New here? <a href="register.html">Create an account</a></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script>
+const form = document.getElementById('loginForm');
+const alertBox = document.getElementById('alertBox');
+const successBox = document.getElementById('successBox');
+const submitBtn = document.getElementById('submitBtn');
+
+if (new URLSearchParams(window.location.search).get('registered') === '1') {
+  successBox.classList.add('visible');
+}
+
+// If already signed in as an applicant, skip straight to the dashboard.
+(function checkExistingSession() {
+  const session = Auth.getSession();
+  if (session && session.role === 'applicant') {
+    window.location.href = 'applicant.html';
+  }
+})();
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  alertBox.classList.remove('visible');
+  successBox.classList.remove('visible');
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Signing in…';
+
+  try {
+    await DB.init();
+    await Auth.loginApplicant(form.email.value, form.password.value);
+    window.location.href = 'applicant.html';
+  } catch (err) {
+    alertBox.textContent = err.message || 'Unable to sign in.';
+    alertBox.classList.add('visible');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Sign in';
+  }
+});
+</script>
+
+</body>
+</html>

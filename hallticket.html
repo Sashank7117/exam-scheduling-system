@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Hall Ticket &mdash; Exam Scheduling System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/hallticket.css">
+</head>
+<body>
+
+<div class="page">
+  <header class="topnav no-print">
+    <div class="container">
+      <a href="applicant.html" class="brand"><span class="seal">ES</span> Exam Scheduling System</a>
+      <nav>
+        <a href="applicant.html">Dashboard</a>
+        <a href="schedule.html">Schedule Exam</a>
+        <span class="user-chip" id="whoAmI"></span>
+        <button type="button" class="linklike" id="logoutBtn">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container ticket-page">
+
+      <div class="ticket-toolbar no-print">
+        <a href="applicant.html" class="btn btn-outline btn-sm">&larr; Back to dashboard</a>
+        <button class="btn btn-gold" id="printBtn">🖨️ Print Hall Ticket</button>
+      </div>
+
+      <div id="alertBox" class="alert alert-error"></div>
+
+      <div id="ticketWrap" style="display:none;">
+        <div class="ticket" id="ticket">
+          <div class="ticket-main">
+            <div class="ticket-header">
+              <div class="brand"><span class="seal">ES</span> Exam Board</div>
+              <div class="ticket-number mono" id="t-hallTicketNumber"></div>
+            </div>
+
+            <div class="ticket-grid">
+              <div class="ticket-field full-width">
+                <div class="k">Applicant Name</div>
+                <div class="v" id="t-applicantName"></div>
+              </div>
+              <div class="ticket-field">
+                <div class="k">Exam</div>
+                <div class="v" id="t-examName"></div>
+              </div>
+              <div class="ticket-field">
+                <div class="k">Exam Code</div>
+                <div class="v mono" id="t-examCode"></div>
+              </div>
+              <div class="ticket-field">
+                <div class="k">Location</div>
+                <div class="v" id="t-location"></div>
+              </div>
+              <div class="ticket-field">
+                <div class="k">Date</div>
+                <div class="v" id="t-date"></div>
+              </div>
+              <div class="ticket-field">
+                <div class="k">Time</div>
+                <div class="v" id="t-time"></div>
+              </div>
+              <div class="ticket-field">
+                <div class="k">Serial Number</div>
+                <div class="v mono" id="t-serial"></div>
+              </div>
+            </div>
+
+            <div class="ticket-instructions">
+              <strong>Instructions</strong>
+              <ul>
+                <li>Arrive at least 45 minutes before the scheduled start time.</li>
+                <li>Carry this hall ticket (printed or on your phone) and a valid photo ID.</li>
+                <li>Electronic devices are not permitted inside the examination hall.</li>
+                <li>Seating is assigned to your registered slot only &mdash; latecomers may be denied entry.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ticket-stub">
+            <div>
+              <div class="k">Hall Ticket</div>
+              <div class="v" id="s-hallTicketNumber"></div>
+              <div class="k">Exam Code</div>
+              <div class="v" id="s-examCode"></div>
+              <div class="k">Location Code</div>
+              <div class="v" id="s-locationCode"></div>
+            </div>
+            <div>
+              <div class="k">Serial</div>
+              <div class="serial-big" id="s-serial"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="footer no-print">Exam Scheduling System &middot; runs locally in your browser</div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/hallticket.js"></script>
+</body>
+</html>

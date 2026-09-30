@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>My Dashboard &mdash; Exam Scheduling System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<div class="page">
+  <header class="topnav">
+    <div class="container">
+      <a href="applicant.html" class="brand"><span class="seal">ES</span> Exam Scheduling System</a>
+      <nav>
+        <a href="applicant.html">Dashboard</a>
+        <a href="schedule.html">Schedule Exam</a>
+        <span class="user-chip" id="whoAmI"></span>
+        <button type="button" class="linklike" id="logoutBtn">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container applicant-main">
+      <div class="row-between mb-2">
+        <h1 id="welcomeHeading">Welcome</h1>
+        <a href="schedule.html" class="btn btn-gold">+ Schedule New Exam</a>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>My Bookings</h3></div>
+        <div id="bookingsEmpty" class="empty-state" style="display:none;">
+          You haven't booked an exam slot yet. <a href="schedule.html">Schedule one now &rarr;</a>
+        </div>
+        <div id="bookingsList" class="stack"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Change my password</h3></div>
+        <div id="changePasswordAlert" class="alert alert-error"></div>
+        <div id="changePasswordSuccess" class="alert alert-success">Password updated.</div>
+        <form id="changePasswordForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="currentPassword">Current password</label>
+              <input type="password" id="currentPassword" autocomplete="current-password" required>
+            </div>
+            <div class="field">
+              <label for="newPasswordSelf">New password</label>
+              <input type="password" id="newPasswordSelf" autocomplete="new-password" required>
+            </div>
+            <div class="field">
+              <label for="confirmNewPasswordSelf">Confirm new password</label>
+              <input type="password" id="confirmNewPasswordSelf" autocomplete="new-password" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-outline">Update Password</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>My security question</h3></div>
+        <p class="muted" style="margin-top:-8px;">Used to verify your identity if you ever forget your password.</p>
+        <div id="securityQuestionAlert" class="alert alert-error"></div>
+        <div id="securityQuestionSuccess" class="alert alert-success">Security question saved.</div>
+        <form id="securityQuestionForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="mySecurityQuestion">Question</label>
+              <select id="mySecurityQuestion" required></select>
+            </div>
+            <div class="field">
+              <label for="mySecurityAnswer">Answer</label>
+              <input type="text" id="mySecurityAnswer" autocomplete="off" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-outline">Save Security Question</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div class="footer">Exam Scheduling System &middot; runs locally in your browser</div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/applicant.js"></script>
+</body>
+</html>
