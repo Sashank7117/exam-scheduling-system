@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Administrator Sign In &mdash; Exam Scheduling System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-wrap">
+    <a href="index.html" class="auth-brand">
+      <span class="seal">ES</span>
+      <span>Exam Scheduling System</span>
+    </a>
+
+    <!-- ======================= Sign-in form (normal case) ======================= -->
+    <div class="auth-card" id="loginCard" style="display:none;">
+      <h1>Administrator sign in</h1>
+      <p class="subtitle">Restricted to exam board administrators.</p>
+
+      <div id="alertBox" class="alert alert-error" role="alert"></div>
+
+      <form id="adminLoginForm" novalidate>
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Sign in</button>
+      </form>
+
+      <div class="auth-switch"><a href="reset-password.html?role=admin">Forgot your password?</a></div>
+    </div>
+
+    <!-- ======================= First-run setup (only if no administrator exists yet) ======================= -->
+    <div class="auth-card" id="setupCard" style="display:none;">
+      <h1>Create the administrator account</h1>
+      <p class="subtitle">No administrator account exists yet. Set one up now &mdash; this only happens once.</p>
+
+      <div id="setupAlertBox" class="alert alert-error" role="alert"></div>
+
+      <form id="setupForm" novalidate>
+        <div class="field">
+          <label for="setupUsername">Username</label>
+          <input type="text" id="setupUsername" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="setupPassword">Password</label>
+          <input type="password" id="setupPassword" autocomplete="new-password" required>
+          <div class="hint" id="setupPasswordHint">At least 10 characters, with upper &amp; lower case, a number, and a symbol.</div>
+        </div>
+        <div class="field">
+          <label for="setupConfirmPassword">Confirm password</label>
+          <input type="password" id="setupConfirmPassword" autocomplete="new-password" required>
+        </div>
+        <div class="field">
+          <label for="setupSecurityQuestion">Security question</label>
+          <select id="setupSecurityQuestion" required></select>
+          <div class="hint">Used to verify it's you if you ever need to reset this password.</div>
+        </div>
+        <div class="field">
+          <label for="setupSecurityAnswer">Answer</label>
+          <input type="text" id="setupSecurityAnswer" autocomplete="off" required>
+        </div>
+        <button type="submit" class="btn btn-gold btn-block" id="setupSubmitBtn">Create Administrator Account</button>
+      </form>
+    </div>
+
+    <div class="text-center mt-2"><a href="index.html" style="color:var(--navy-100); font-size:0.85rem;">&larr; Back to home</a></div>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin-login.js"></script>
+</body>
+</html>

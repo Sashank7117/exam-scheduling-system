@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Discourage caching a page that renders sensitive admin data. This is a
+     best-effort browser hint only - a real deployment should also send the
+     equivalent Cache-Control / Pragma HTTP headers from the server. -->
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Admin Dashboard &mdash; Exam Scheduling System</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<!-- Shown for the instant it takes admin.js to verify the session and
+     either redirect to admin-login.html or reveal the dashboard below.
+     Nothing sensitive lives in this markup. -->
+<div id="authGate" class="auth-shell">
+  <p style="color:var(--navy-100); font-size:0.9rem;">Checking your session…</p>
+</div>
+
+<!-- ======================= ADMIN DASHBOARD (only unhidden after admin.js confirms a valid admin session) ======================= -->
+<div id="dashboardView" class="admin-shell" style="display:none;">
+
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="seal">ES</span> Exam Board</a>
+    <nav>
+      <button type="button" class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+      <button type="button" class="tab-btn" data-tab="exams">📄 Exams</button>
+      <button type="button" class="tab-btn" data-tab="slots">🗓️ Slots</button>
+      <button type="button" class="tab-btn" data-tab="applicants">👥 Applicants</button>
+      <button type="button" class="tab-btn" data-tab="reports">📈 Reports</button>
+      <button type="button" class="tab-btn" data-tab="security">🔒 Security</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="who" id="whoAmI"></div>
+      <button type="button" class="btn btn-outline btn-block btn-sm" id="logoutBtn" style="border-color:rgba(255,255,255,0.25); color:#fff;">Logout</button>
+    </div>
+  </aside>
+
+  <main class="admin-content">
+
+    <!-- ---------------- Dashboard tab ---------------- -->
+    <section class="tabpanel active" id="tab-dashboard">
+      <div class="admin-topbar"><h1>Dashboard</h1></div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="value" id="statTotalExams">0</div><div class="label">Total Exams</div></div>
+        <div class="stat-card"><div class="value" id="statActiveExams">0</div><div class="label">Active Exams</div></div>
+        <div class="stat-card"><div class="value" id="statTotalApplicants">0</div><div class="label">Total Applicants</div></div>
+        <div class="stat-card"><div class="value" id="statTotalBookings">0</div><div class="label">Total Bookings</div></div>
+        <div class="stat-card"><div class="value" id="statAvailableSeats">0</div><div class="label">Available Seats</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Recent bookings</h3></div>
+        <div class="table-wrap"><table id="recentBookingsTable">
+          <thead><tr><th>Hall Ticket #</th><th>Applicant</th><th>Exam</th><th>Slot</th><th>Booked At</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ---------------- Exams tab ---------------- -->
+    <section class="tabpanel" id="tab-exams">
+      <div class="admin-topbar">
+        <h1>Exams</h1>
+        <button class="btn btn-primary" id="newExamBtn">+ New Exam</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap"><table id="examsTable">
+          <thead><tr><th>Exam Code</th><th>Exam Name</th><th>Description</th><th>Status</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ---------------- Slots tab ---------------- -->
+    <section class="tabpanel" id="tab-slots">
+      <div class="admin-topbar">
+        <h1>Exam Slots</h1>
+        <button class="btn btn-primary" id="newSlotBtn">+ New Slot</button>
+      </div>
+      <div class="filter-bar">
+        <select id="slotExamFilter"><option value="">All exams</option></select>
+      </div>
+      <div class="card">
+        <div class="table-wrap"><table id="slotsTable">
+          <thead><tr><th>Exam</th><th>Location</th><th>Date</th><th>Time</th><th>Capacity</th><th>Booked</th><th>Available</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ---------------- Applicants tab ---------------- -->
+    <section class="tabpanel" id="tab-applicants">
+      <div class="admin-topbar"><h1>Applicants</h1></div>
+      <div class="filter-bar">
+        <input type="text" id="applicantSearch" placeholder="Search by name or email…">
+      </div>
+      <div class="card">
+        <div class="table-wrap"><table id="applicantsTable">
+          <thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Registered</th><th>Bookings</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ---------------- Reports tab ---------------- -->
+    <section class="tabpanel" id="tab-reports">
+      <div class="admin-topbar">
+        <h1>Reports</h1>
+        <div class="row">
+          <button class="btn btn-outline" id="printReportBtn">🖨️ Print</button>
+          <button class="btn btn-gold" id="exportCsvBtn">⬇ Export CSV</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <input type="text" id="reportSearch" placeholder="Search applicant name / email…">
+        <select id="reportExamFilter"><option value="">All exams</option></select>
+        <select id="reportLocationFilter"><option value="">All locations</option></select>
+        <input type="date" id="reportDateFilter">
+      </div>
+      <div class="card">
+        <div class="table-wrap"><table id="reportsTable">
+          <thead><tr><th>Hall Ticket #</th><th>Serial</th><th>Applicant</th><th>Email</th><th>Exam</th><th>Location</th><th>Date</th><th>Time</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ---------------- Security tab ---------------- -->
+    <section class="tabpanel" id="tab-security">
+      <div class="admin-topbar"><h1>Security</h1></div>
+
+      <div class="card">
+        <div class="card-header"><h3>Change my password</h3></div>
+        <div id="changePasswordAlert" class="alert alert-error"></div>
+        <div id="changePasswordSuccess" class="alert alert-success">Password updated.</div>
+        <form id="changePasswordForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="currentPassword">Current password</label>
+              <input type="password" id="currentPassword" autocomplete="current-password" required>
+            </div>
+            <div class="field">
+              <label for="newPasswordSelf">New password</label>
+              <input type="password" id="newPasswordSelf" autocomplete="new-password" required>
+              <div class="hint">At least 10 characters, with upper &amp; lower case, a number, and a symbol.</div>
+            </div>
+            <div class="field">
+              <label for="confirmNewPasswordSelf">Confirm new password</label>
+              <input type="password" id="confirmNewPasswordSelf" autocomplete="new-password" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>My security question</h3></div>
+        <p class="muted" style="margin-top:-8px;">Used to verify your identity if you ever forget your password.</p>
+        <div id="securityQuestionAlert" class="alert alert-error"></div>
+        <div id="securityQuestionSuccess" class="alert alert-success">Security question saved.</div>
+        <form id="securityQuestionForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="adminSecurityQuestion">Question</label>
+              <select id="adminSecurityQuestion" required></select>
+            </div>
+            <div class="field">
+              <label for="adminSecurityAnswer">Answer</label>
+              <input type="text" id="adminSecurityAnswer" autocomplete="off" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Security Question</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Unlock an account</h3></div>
+        <p class="muted" style="margin-top:-8px;">Accounts lock automatically after 5 failed sign-in attempts within 15 minutes. Clearing recent failures unlocks it immediately.</p>
+        <div id="unlockAlert" class="alert alert-error"></div>
+        <div id="unlockSuccess" class="alert alert-success">Recent failed attempts cleared &mdash; the account is unlocked.</div>
+        <div class="form-row" style="align-items:flex-end;">
+          <div class="field">
+            <label for="unlockRole">Account type</label>
+            <select id="unlockRole">
+              <option value="applicant">Applicant (email)</option>
+              <option value="admin">Administrator (username)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="unlockIdentifier">Email / username</label>
+            <input type="text" id="unlockIdentifier">
+          </div>
+          <div class="field" style="flex:0;">
+            <button type="button" class="btn btn-outline" id="unlockBtn" style="white-space:nowrap;">Clear Failed Attempts</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Login activity</h3>
+          <div class="row">
+            <button class="btn btn-outline btn-sm" id="refreshLoginLogsBtn">↻ Refresh</button>
+            <button class="btn btn-gold btn-sm" id="exportExcelBtn">⬇ Download Excel (.xlsx)</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <input type="text" id="logSearch" placeholder="Search email / username…">
+          <select id="logRoleFilter">
+            <option value="">All account types</option>
+            <option value="applicant">Applicants</option>
+            <option value="admin">Administrators</option>
+          </select>
+          <select id="logStatusFilter">
+            <option value="">All statuses</option>
+            <option value="success">Successful sign-ins</option>
+            <option value="failed">Failed sign-ins</option>
+            <option value="blocked">Blocked (locked out)</option>
+            <option value="reset_success">Password reset (success)</option>
+            <option value="reset_failed">Password reset (failed answer)</option>
+          </select>
+        </div>
+        <div class="table-wrap"><table id="loginLogsTable">
+          <thead><tr><th>When</th><th>Account Type</th><th>Email / Username</th><th>Name</th><th>Status</th><th>Detail</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ======================= Exam modal ======================= -->
+<div class="modal-backdrop" id="examModalBackdrop">
+  <div class="modal">
+    <div class="row-between">
+      <h3 id="examModalTitle">New Exam</h3>
+      <button class="modal-close" id="examModalClose" aria-label="Close">&times;</button>
+    </div>
+    <div id="examModalAlert" class="alert alert-error"></div>
+    <form id="examForm">
+      <input type="hidden" id="examId">
+      <div class="field">
+        <label for="examName">Exam Name</label>
+        <input type="text" id="examName" required>
+      </div>
+      <div class="field">
+        <label for="examCode">Exam Code</label>
+        <input type="text" id="examCode" placeholder="e.g. AVI" maxlength="10" required>
+        <div class="hint">Short uppercase code, used in hall ticket numbers.</div>
+      </div>
+      <div class="field">
+        <label for="examDescription">Description</label>
+        <textarea id="examDescription" rows="3"></textarea>
+      </div>
+      <div class="field">
+        <label for="examStatus">Status</label>
+        <select id="examStatus">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save Exam</button>
+    </form>
+  </div>
+</div>
+
+<!-- ======================= Slot modal ======================= -->
+<div class="modal-backdrop" id="slotModalBackdrop">
+  <div class="modal">
+    <div class="row-between">
+      <h3 id="slotModalTitle">New Slot</h3>
+      <button class="modal-close" id="slotModalClose" aria-label="Close">&times;</button>
+    </div>
+    <div id="slotModalAlert" class="alert alert-error"></div>
+    <form id="slotForm">
+      <input type="hidden" id="slotId">
+      <div class="field">
+        <label for="slotExam">Exam</label>
+        <select id="slotExam" required></select>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="slotLocation">Location</label>
+          <input type="text" id="slotLocation" placeholder="e.g. Vijayawada" required>
+        </div>
+        <div class="field">
+          <label for="slotLocationCode">Location Code</label>
+          <input type="text" id="slotLocationCode" placeholder="e.g. VJA" maxlength="10" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="slotDate">Date</label>
+        <input type="date" id="slotDate" required>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="slotStartTime">Start Time</label>
+          <input type="time" id="slotStartTime" required>
+        </div>
+        <div class="field">
+          <label for="slotEndTime">End Time</label>
+          <input type="time" id="slotEndTime" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="slotCapacity">Capacity (seats)</label>
+        <input type="number" id="slotCapacity" min="1" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save Slot</button>
+    </form>
+  </div>
+</div>
+
+<!-- SheetJS: used only to build the downloadable .xlsx file in the Security tab -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
