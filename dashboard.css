@@ -1,0 +1,261 @@
+/* ==========================================================================
+   dashboard.css - Admin sidebar dashboard, applicant dashboard, and the
+   exam-scheduling workflow.
+   ========================================================================== */
+
+/* ------------------------------ Admin shell -------------------------------- */
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 232px;
+  flex-shrink: 0;
+  background: var(--navy-900);
+  color: var(--navy-100);
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 10px 20px;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.sidebar .brand .seal {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.sidebar nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+
+.sidebar nav button, .sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  color: var(--navy-100);
+  text-decoration: none;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sidebar nav button:hover, .sidebar nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.sidebar nav button.active { background: var(--gold); color: var(--navy-900); font-weight: 700; }
+
+.sidebar .sidebar-footer {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.sidebar .sidebar-footer .who {
+  font-size: 0.78rem;
+  color: var(--navy-100);
+  margin-bottom: 8px;
+  padding: 0 10px;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 28px 32px 64px;
+  min-width: 0;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.admin-topbar h1 { margin: 0; font-size: 1.4rem; }
+
+.tabpanel { display: none; }
+.tabpanel.active { display: block; }
+
+/* ------------------------------- Stat grid --------------------------------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.stat-card .value {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--navy-800);
+}
+
+.stat-card .label {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+@media (max-width: 1000px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ------------------------------- Filter bar --------------------------------- */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.filter-bar input, .filter-bar select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-family: var(--font-body);
+}
+
+/* -------------------------------- Modal -------------------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 26, 51, 0.55);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.modal-backdrop.visible { display: flex; }
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+}
+
+.modal .row-between { margin-bottom: 16px; }
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--ink-soft);
+  line-height: 1;
+}
+
+/* ------------------------------ Applicant shell ------------------------------ */
+
+.applicant-main { max-width: 880px; margin: 0 auto; }
+
+.booking-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.booking-card .ticket-no {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--navy-800);
+}
+
+/* ------------------------------ Scheduling workflow --------------------------- */
+
+.stepper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.stepper .step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.stepper .step.done { background: var(--green-light); color: var(--green); border-color: #bfe3cd; }
+.stepper .step.current { background: var(--navy-800); color: #fff; border-color: var(--navy-800); font-weight: 600; }
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.slot-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.slot-card:hover { border-color: var(--navy-700); box-shadow: var(--shadow); }
+.slot-card.selected { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-light); }
+.slot-card.full { opacity: 0.55; cursor: not-allowed; }
+.slot-card.full:hover { border-color: var(--border); box-shadow: none; }
+
+.slot-card .time { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
+.slot-card .meta { font-size: 0.8rem; color: var(--ink-soft); margin-top: 4px; }
+.slot-card .seats { margin-top: 10px; font-size: 0.78rem; font-weight: 600; }
+.slot-card .seats.ok { color: var(--green); }
+.slot-card .seats.low { color: var(--gold); }
+.slot-card .seats.full { color: var(--red); }
+
+@media (max-width: 900px) {
+  .admin-shell { flex-direction: column; }
+  .sidebar { width: 100%; flex-direction: row; align-items: center; overflow-x: auto; }
+  .sidebar nav { flex-direction: row; }
+  .sidebar .sidebar-footer { display: none; }
+  .admin-content { padding: 20px; }
+}

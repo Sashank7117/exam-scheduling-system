@@ -1,0 +1,152 @@
+/* ==========================================================================
+   login.css - Styles for index, login, register and admin-login screens
+   ========================================================================== */
+
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(184, 134, 46, 0.16), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(34, 49, 89, 0.5), transparent 45%),
+    var(--navy-900);
+}
+
+.auth-wrap {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.auth-brand .seal {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.auth-brand span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.auth-card {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  padding: 32px;
+}
+
+.auth-card h1 {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+.auth-card .subtitle {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin-bottom: 24px;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.auth-switch a { color: var(--navy-800); font-weight: 600; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+
+.auth-footnote {
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 20px;
+}
+
+/* ----------------------------- Landing page ------------------------------- */
+
+.landing-hero {
+  text-align: center;
+  color: #fff;
+  max-width: 560px;
+  margin: 0 auto 32px;
+}
+
+.landing-hero .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.landing-hero h1 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.landing-hero p {
+  color: var(--navy-100);
+  font-size: 0.98rem;
+}
+
+.landing-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.landing-choice {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 24px;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  transition: transform 0.15s ease;
+}
+
+.landing-choice:hover { transform: translateY(-3px); }
+
+.landing-choice .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--navy-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.landing-choice h3 { margin-bottom: 4px; font-size: 1.05rem; }
+.landing-choice p { margin: 0; font-size: 0.85rem; color: var(--ink-soft); }
+
+@media (max-width: 560px) {
+  .landing-choices { grid-template-columns: 1fr; }
+}
